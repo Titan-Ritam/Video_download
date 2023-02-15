@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+  <link rel="stylesheet" href="../static/css/youtube.css">
+</head>
+<body>
+  <h1 class="heading neonText">Download Youtube Video</h1>
+     <form>
+  <div>
+    <label for="youtube_link">Paste the YouTube video link</label>
+    <input type="text" id="youtube_link" name="youtube_link">
+  </div>
+  <div class="buttn">
+    <button type="button" onclick="submitForm()">Download Video</button>
+    <select name="quality" id="quality">
+
+      <option value="360p">360p</option>
+      <option value="720p">720p</option>
+      <option value="1080p">1080p</option>
+      <option value="highest_available">Highest Available</option>
+      
+  </select>
+  </div>
+   
+   
+   
+  <div id="error_message" style="display:none;"></div>
+</form>
+
+
+
+<script>
+  function submitForm() {
+    let youtubeLink = document.getElementById("youtube_link").value;
+    let quality = document.getElementById("quality").value;
+    console.log(quality)
+
+    if (!youtubeLink) {
+      document.getElementById("error_message").innerHTML = "Please fill the link.";
+      document.getElementById("error_message").style.display = "block";
+      return;
+    }
+
+    if (!youtubeLink.includes("youtube.com")) {
+      document.getElementById("error_message").innerHTML = "This is not a YouTube link.";
+      document.getElementById("error_message").style.display = "block";
+      return;
+    }
+
+    const xhr = new XMLHttpRequest();
+        xhr.open("POST", "/api/youtubedown", true);
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xhr.onreadystatechange = function() {
+          if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+            alert("Video download successful");
+          }
+        };
+        xhr.send(`youtube_link=${youtubeLink}&quality=${quality}`);
+        // xhr.send(JSON.stringify({ youtube_link:youtubeLink, quality: quality }));
+ }
+
+    
+
+ </script>
+
+
+</body>
+</html>

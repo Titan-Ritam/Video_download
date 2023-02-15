@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="../static/css/facebook.css ">
+  <title></title>
+</head>
+<body>
+  <h1 class="heading neonText">Download Facebook Video</h1>
+	<form>
+  <div>
+    <label for="facebook_link">Paste the Facebook video link:</label>
+    <input type="text" id="facebook_link" name="facebook_link">
+  </div>
+  <div class="buttn">
+    <button type="button" onclick="submitForm()">Download Video</button>
+  </div>
+  <div id="error_message" style="display:none;"></div>
+</form>
+
+<script>
+  function submitForm() {
+    let facebookLink = document.getElementById("facebook_link").value;
+
+    if (!facebookLink) {
+      document.getElementById("error_message").innerHTML = "Please fill the link.";
+      document.getElementById("error_message").style.display = "block";
+      return;
+    }
+
+    if (!facebookLink.includes("facebook.com")) {
+      document.getElementById("error_message").innerHTML = "This is not a Facebook link.";
+      document.getElementById("error_message").style.display = "block";
+      return;
+    }
+
+    let xhr = new XMLHttpRequest();
+    xhr.open("POST", "/api/facedown", true);
+    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    xhr.onreadystatechange = function() {
+      if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+        console.log(this.responseText);
+      }
+    };
+    xhr.send(`facebook_link=${encodeURIComponent(facebookLink)}`);
+  }
+</script>
+
+
+</body>
+</html>
